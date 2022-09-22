@@ -4,10 +4,10 @@ import 'exceptions.dart';
 import 'user.dart';
 
 class AuthRepository {
-  late final Chaos chaos;
+  late final Chaos _chaos;
 
   AuthRepository({Chaos? chaos}) {
-    this.chaos = chaos ?? RealChaos();
+    this._chaos = chaos ?? RealChaos();
   }
 
   final Map<String, User> _db = {
@@ -19,7 +19,7 @@ class AuthRepository {
   };
 
   Future<User> login(String email, String password) async {
-    await chaos.deploy();
+    await _chaos.deploy();
 
     var user = _db[email];
 
@@ -35,7 +35,7 @@ class AuthRepository {
   }
 
   Future<User> createUser(User user) async {
-    await chaos.deploy();
+    await _chaos.deploy();
 
     if (await userExists(user.email)) {
       throw UserAlreadyExistsException();
@@ -47,7 +47,7 @@ class AuthRepository {
   }
 
   Future<bool> userExists(String email) async {
-    await chaos.deploy();
+    await _chaos.deploy();
     return _db.containsKey(email);
   }
 }
